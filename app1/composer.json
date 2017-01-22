@@ -17,7 +17,11 @@
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
         "phpunit/phpunit": "^5.7",
-        "zendframework/zend-test": "^3.0"
+        "zendframework/zend-test": "^3.0",
+        "zendframework/zend-console": "^2.6",
+        "doctrine/doctrine-orm-module": "^1.1",
+        "squizlabs/php_codesniffer": "*",
+        "doctrine/migrations": "^1.5"
     },
     "autoload": {
         "psr-4": {

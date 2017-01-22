@@ -57,4 +57,41 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'doctrine' => [
+        'driver' => [
+            'model' => [
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => [
+                    __DIR__ . '/../src/Model',
+                ],
+            ],
+            'orm_default' => [
+                'drivers' => [
+                    'Application\Model' => 'model'
+                ]
+            ]
+        ],
+        'connection' => [
+            'orm_default' => [
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => [
+                    'host' => 'mysql',
+                    'port' => '3306',
+                    'user' => 'zf',
+                    'password' => 'zf',
+                    'dbname' => 'zf'
+                ]
+            ]
+        ],
+        'migrations_configuration' => [
+            'orm_default' => [
+                'directory' => __DIR__ . '/../src/Migrations',
+                'name'      => 'Doctrine Database Migrations',
+                'namespace' => 'DoctrineORMModule\Migrations',
+                'table'     => 'migrations',
+                'column'    => 'version',
+            ],
+        ],
+    ]
 ];
