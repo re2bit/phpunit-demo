@@ -1,5 +1,5 @@
 <?php
-namespace Backend\Repository;
+namespace Application\Repository;
 
 use Application\Model\Post;
 use Doctrine\ORM\EntityRepository;
