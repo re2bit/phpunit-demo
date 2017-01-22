@@ -21,7 +21,8 @@
         "zendframework/zend-console": "^2.6",
         "doctrine/doctrine-orm-module": "^1.1",
         "squizlabs/php_codesniffer": "*",
-        "doctrine/migrations": "^1.5"
+        "doctrine/migrations": "^1.5",
+        "doctrine/data-fixtures": "^1.2"
     },
     "autoload": {
         "psr-4": {
