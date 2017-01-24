@@ -34,11 +34,21 @@ return [
                     ],
                 ],
             ],
+            'rest' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/posts[/:post_id]',
+                    'defaults' => [
+                        'controller' => Controller\RestController::class,
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\RestController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
