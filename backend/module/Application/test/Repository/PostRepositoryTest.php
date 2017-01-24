@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bundle\FrameworkBundle\Tests\Functional\Bundle\TestBundle\DependencyInjection\TestExtension;
 use Zend\Stdlib\ArrayUtils;
 use \Zend\Test\PHPUnit\Controller\AbstractControllerTestCase;
 
