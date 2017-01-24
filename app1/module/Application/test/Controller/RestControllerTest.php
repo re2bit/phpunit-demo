@@ -8,6 +8,10 @@
 namespace ApplicationTest\Controller;
 
 use Application\Controller\RestController;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManager;
 use Zend\Stdlib\ArrayUtils;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
@@ -26,6 +30,8 @@ class RestControllerTest extends AbstractHttpControllerTestCase
             $configOverrides
         ));
 
+        $this->loadFixtures(__DIR__ . '/Fixtures');
+
         parent::setUp();
     }
 
@@ -34,15 +40,15 @@ class RestControllerTest extends AbstractHttpControllerTestCase
         $this->dispatch('/posts', 'GET');
         $this->assertResponseStatusCode(200);
         $this->assertModuleName('application');
-        $this->assertControllerName(RestController::class); // as specified in router's controller name alias
+        $this->assertControllerName(RestController::class);
         $this->assertControllerClass('RestController');
         $this->assertMatchedRouteName('rest');
-        $this->assertJson(json_encode(
+        $this->assertEquals(json_encode(
                 [
                     'posts'=>[
                         [
-                            'name'=>'Test 1',
-                            'description'=>'Test Post 1'
+                            'name'=>'Controller Test 1',
+                            'description'=>'Controller Test Post 1'
                         ]
                     ]
                 ]
@@ -51,4 +57,24 @@ class RestControllerTest extends AbstractHttpControllerTestCase
         );
     }
 
+    /**
+     * Truncates the Database and loads Fixtures from Fixture Path
+     *
+     * @param $path
+     *
+     * @return void
+     */
+    public function loadFixtures($path) : void
+    {
+        /** @var EntityManager $em */
+        $em = $this->getApplicationServiceLocator()->get(EntityManager::class);
+        $em->getConnection()->exec('SET foreign_key_checks = 0');
+        $loader = new Loader();
+        $loader->loadFromDirectory($path);
+        $purger = new ORMPurger($em);
+        $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
+        $executor = new ORMExecutor($em, $purger);
+        $executor->execute($loader->getFixtures());
+        $em->getConnection()->exec('SET foreign_key_checks = 1');
+    }
 }

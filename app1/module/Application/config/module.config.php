@@ -7,6 +7,7 @@
 
 namespace Application;
 
+use Application\Controller\Factory\RestControllerFactory;
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
@@ -48,7 +49,7 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\RestController::class => InvokableFactory::class,
+            Controller\RestController::class => RestControllerFactory::class,
         ],
     ],
     'view_manager' => [
