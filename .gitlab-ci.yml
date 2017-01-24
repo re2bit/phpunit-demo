@@ -1,0 +1,16 @@
+image: re2bit/zend_sekleton:latest
+services:
+  - mysql:latest
+variables:
+  MYSQL_ROOT_PASSWORD: zf
+  MYSQL_DATABASE: zf
+  MYSQL_USER: zf
+  MYSQL_PASSWORD: zf
+test:backend:phpunit:
+  stage: test
+  script:
+    - cd backend
+    - composer install --no-interaction
+    - vendor/bin/doctrine-module migrations:status --no-interaction
+    - vendor/bin/doctrine-module migrations:migrate --no-interaction
+    - vendor/bin/phpunit
