@@ -1,10 +1,12 @@
 <?php
 namespace Application\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Project
+ * Post
  *
  * @ORM\Table(name="posts")
  * @ORM\Entity(repositoryClass="\Application\Repository\PostRepository")
@@ -47,6 +49,20 @@ class Post
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updated_at;
+
+    /**
+     * @var ArrayCollection|Comment[]
+     * @ORM\OneToMany(targetEntity="\Application\Model\Comment", mappedBy="post" ,indexBy="id")
+     */
+    private $comments;
+
+    /**
+     * Post constructor.
+     */
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -118,5 +134,18 @@ class Post
     public function setUpdatedAt($updated_at)
     {
         $this->updated_at = $updated_at;
+    }
+
+    public function addComment(Comment $comment)
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPost($this);
+        }
+    }
+
+    public function getComments(): Collection
+    {
+        return $this->comments;
     }
 }
