@@ -18,6 +18,7 @@ class FaceFixture extends AbstractFixture //implements DependentFixtureInterface
         $post = new Post();
         $post->setName('Test 1');
         $post->setDescription('Test Post 1');
+        $this->setReference('post', $post);
         $manager->persist($post);
         $manager->flush();
     }

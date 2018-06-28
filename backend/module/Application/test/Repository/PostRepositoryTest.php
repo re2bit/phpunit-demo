@@ -3,6 +3,7 @@
 namespace ApplicationTest\Repository;
 
 use Application\Model\Post;
+use Application\Repository\PostRepository;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
@@ -60,9 +61,9 @@ class PostRepositoryTest extends AbstractControllerTestCase
     public function testFindAll() : void
     {
         /** @var EntityManager $em */
-        $em = $this->getApplicationServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $em = $this->getApplicationServiceLocator()->get(EntityManager::class);
         $postRepository = $em->getRepository(Post::class);
-        $this->assertNotEmpty($postRepository->findAll());
+        static::assertNotEmpty($postRepository->findAll());
     }
 
     /**
@@ -73,13 +74,30 @@ class PostRepositoryTest extends AbstractControllerTestCase
     public function testFindFist() : void
     {
         /** @var EntityManager $em */
-        $em = $this->getApplicationServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $em = $this->getApplicationServiceLocator()->get(EntityManager::class);
         $postRepository = $em->getRepository(Post::class);
         /** @var Post $post */
         $post = $postRepository->find(1);
-        $this->assertNotNull($post);
-        $this->assertEquals('Test 1', $post->getName());
+        static::assertNotNull($post);
+        static::assertEquals('Test 1', $post->getName());
     }
 
-
+    public function testLoadAllPostsWithCommentsLongerThan4Chars()
+    {
+         /** @var EntityManager $em */
+        $em = $this->getApplicationServiceLocator()->get(EntityManager::class);
+        /** @var PostRepository $postRepository */
+        $postRepository = $em->getRepository(Post::class);
+        /** @var Post $post */
+        $posts = $postRepository->loadAllPostsWithCommentsLongerThan6Chars();
+        static::assertNotEmpty($posts);
+        $firstPost = reset($posts);
+        static::assertEquals(1, $firstPost->getComments()->count());
+        /** @var Post $post */
+        $post = $em->find(Post::class, 1);
+        static::assertEquals(1, $post->getComments()->count());
+        $em->clear();
+        $post = $em->find(Post::class, 1);
+        static::assertEquals(15, $post->getComments()->count());
+    }
 }
